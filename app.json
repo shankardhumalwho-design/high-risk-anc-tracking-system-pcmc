@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "High Risk ANC - PCMC",
+    "slug": "high-risk-anc-pcmc",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "android": {
+      "package": "com.pcmc.highriskanc",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+    },
+    "plugins": ["expo-location", "expo-secure-store"]
+  }
+}
