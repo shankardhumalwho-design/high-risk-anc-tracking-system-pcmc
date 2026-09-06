@@ -12,51 +12,26 @@ jobs:
     name: Build Android APK
     runs-on: ubuntu-latest
 
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
-
-      - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          expo-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-          packager: npm
-          eas-cache: false
-
-      - name: Check project files
-        run: |
-          echo "Current directory:"
-          pwd
-
-          echo "Project files:"
-          ls -la
-
-          echo "Checking package.json:"
-          test -f package.json
-
-          echo "Checking eas.json:"
-          test -f eas.json
+          cache: npm
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Verify EAS authentication
-        run: eas whoami
+      - name: Check EAS authentication
+        run: npx eas-cli@latest whoami
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Build Android APK on EAS
-        run: |
-          eas build \
-            --platform android \
-            --profile preview \
-            --non-interactive
+      - name: Build APK on EAS
+        run: npx eas-cli@latest build --platform android --profile preview --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
